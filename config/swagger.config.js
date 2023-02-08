@@ -6,17 +6,13 @@ export const fastifySwaggerConfig = {
             version : "0.1.0"
         },
         tags : [
-            {
-                name : "products",
-                description : "admin can write and user can read products"
-            },
-            {
-                name : "home",
-                description : "home page"
-            }
+            {name : "authentication"},
+            {name : "products"},
+            {name : "home"},
         ],
         host : "localhost:5000",
         schemes : ['http'],
+        consumes : ["application/json", "application/x-www-form-urlencoded"],
         securityDefinitions : {
             apiKey : {
                 type : "apiKey",

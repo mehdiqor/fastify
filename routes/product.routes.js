@@ -15,7 +15,6 @@ const getOneProductItem = {
     schema : {
         tags : ['products'],
         security : [{apiKey : []}],
-        summary : "some desc",
         params : {
             type : 'object',
             properties : {

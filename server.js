@@ -8,11 +8,13 @@ import fastifySwaggerUi from "@fastify/swagger-ui";
 import indexRoutes from "./routes/index.routes.js";
 import productRoutes from "./routes/product.routes.js";
 import { fastifySwaggerConfig, fastifySwaggerUiConfig } from "./config/swagger.config.js";
+import authRoutes from "./routes/auth.routes.js";
 
 fastify.register(fastifySwagger, fastifySwaggerConfig);
 fastify.register(fastifySwaggerUi, fastifySwaggerUiConfig);
-fastify.register(indexRoutes)
-fastify.register(productRoutes, {prefix : "products"})
+fastify.register(indexRoutes);
+fastify.register(productRoutes, {prefix : "products"});
+fastify.register(authRoutes, {prefix : "auth"});
 
 const PORT = 5000;
 const main = () => {
