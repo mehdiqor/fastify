@@ -28,6 +28,7 @@ const indexRoute = {
         })
     }
 }
+
 export default function indexRoutes(fastify, option, done){
     fastify.get("/", indexRoute)
     done();

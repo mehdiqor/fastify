@@ -11,21 +11,41 @@ import { fastifySwaggerConfig, fastifySwaggerUiConfig } from "./config/swagger.c
 import authRoutes from "./routes/auth.routes.js";
 import fastifyBcrypt from "fastify-bcrypt";
 import fastifyJwt from "@fastify/jwt";
-
-fastify.register(fastifyBcrypt, {
-    saltWorkFactor : 12
-});
-fastify.register(fastifyJwt, {
-    secret : "women-life-freedom"
-});
-fastify.register(fastifySwagger, fastifySwaggerConfig);
-fastify.register(fastifySwaggerUi, fastifySwaggerUiConfig);
-fastify.register(indexRoutes);
-fastify.register(productRoutes, {prefix : "products"});
-fastify.register(authRoutes, {prefix : "auth"});
+// import fastifyExpress from "@fastify/express";
+import fastifyMiddie from "@fastify/middie";
+import cors from "cors";
+import serveStatic from "serve-static";
+import * as path from "path";
+import { fileURLToPath } from "url";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const PORT = 5000;
-const main = () => {
+const main = async() => {
+    // middleware config
+    // await fastify.register(fastifyExpress);
+    await fastify.register(fastifyMiddie);
+    // access token and security config
+    fastify.register(fastifyBcrypt, {
+        saltWorkFactor : 12
+    });
+    fastify.register(fastifyJwt, {
+        secret : "women-life-freedom"
+    });
+    // swagger config
+    fastify.register(fastifySwagger, fastifySwaggerConfig);
+    fastify.register(fastifySwaggerUi, fastifySwaggerUiConfig);
+    // middleware config
+    fastify.use(cors());
+    fastify.use((req, res, next) => {
+        console.log("Hello middleware!");
+        next()
+    });
+    fastify.use("/", serveStatic(path.join(__dirname, "public")))
+    // routes config
+    fastify.register(productRoutes, {prefix : "products"});
+    fastify.register(authRoutes, {prefix : "auth"});
+    fastify.register(indexRoutes);
+    // listen to port and run
     fastify.listen({port : PORT},
         (err) => {
             if(err) console.log(err.message);
