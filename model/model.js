@@ -29,9 +29,13 @@ User.init({
     },
     birthday : {
         type : DataTypes.DATE
+    },
+    accessToken : {
+        type : DataTypes.STRING,
+        defaultValue : ""
     }
 }, {
     sequelize,
-    name : "user"
+    name : "Users"
 });
-User.sync({force : true})
+// User.sync({force : true});
