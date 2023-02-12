@@ -10,14 +10,14 @@ async function findCategory(id, reply){
     return category
 }
 export const createCategory = async(req, reply) => {
-    const {name} = req.body;
+    const {name, ParentId} = req.body;
     const category = await Category.findOne({
         where : {name}
     })
     if(category) return reply.status(400).send({
         message : "category is already exist"
     })
-    const newCategory = await Category.create({name});
+    const newCategory = await Category.create({name, ParentId});
     await newCategory.save();
     reply.status(201).send({
         message : "category created successfully"
@@ -35,7 +35,23 @@ export const updateCategory = async(req, reply) => {
     })
 }
 export const getAllCategories = async(req, reply) => {
-    const categories = await Category.findAll({});
+    const categories = await Category.findAll({
+        include : [
+            {
+                model : Category,
+                as : "children",
+                include : [
+                    {
+                        model : Category,
+                        as : "children"
+                    }
+                ]
+            }
+        ],
+        where : {
+            ParentId : null
+        }
+    });
     reply.status(200).send({categories});
 }
 export const getOneCategory = async(req, reply) => {

@@ -10,6 +10,9 @@ const addCategoryRoute = {
             properties : {
                 name : {
                     type : 'string'
+                },
+                ParentId : {
+                    type : 'integer'
                 }
             }
         },
