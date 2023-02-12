@@ -18,6 +18,7 @@ import serveStatic from "serve-static";
 import * as path from "path";
 import { fileURLToPath } from "url";
 import userRoutes from "./routes/user.routes.js";
+import categoryRoutes from "./routes/category.routes.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const PORT = 5000;
@@ -41,12 +42,13 @@ const main = async() => {
         console.log("Hello middleware!");
         next()
     });
-    fastify.use("/", serveStatic(path.join(__dirname, "public")))
+    fastify.use("/my-files", serveStatic(path.join(__dirname, "public")))
     // routes config
-    fastify.register(productRoutes, {prefix : "products"});
+    fastify.register(indexRoutes);
     fastify.register(authRoutes, {prefix : "auth"});
     fastify.register(userRoutes, {prefix : "user"});
-    fastify.register(indexRoutes);
+    fastify.register(categoryRoutes, {prefix : "category"});
+    fastify.register(productRoutes, {prefix : "products"});
     // listen to port and run
     fastify.listen({port : PORT},
         (err) => {

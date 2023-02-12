@@ -6,10 +6,11 @@ export const fastifySwaggerConfig = {
             version : "0.1.0"
         },
         tags : [
-            {name : "user"},
-            {name : "authentication"},
-            {name : "products"},
             {name : "home"},
+            {name : "authentication"},
+            {name : "user"},
+            {name : "category"},
+            {name : "products"},
         ],
         host : "localhost:5000",
         schemes : ['http'],
