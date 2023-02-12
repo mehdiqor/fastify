@@ -1,4 +1,3 @@
-
 import { User } from "../model/model.js";
 import { fastify } from "../server.js";
 

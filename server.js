@@ -17,6 +17,7 @@ import cors from "cors";
 import serveStatic from "serve-static";
 import * as path from "path";
 import { fileURLToPath } from "url";
+import userRoutes from "./routes/user.routes.js";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const PORT = 5000;
@@ -44,6 +45,7 @@ const main = async() => {
     // routes config
     fastify.register(productRoutes, {prefix : "products"});
     fastify.register(authRoutes, {prefix : "auth"});
+    fastify.register(userRoutes, {prefix : "user"});
     fastify.register(indexRoutes);
     // listen to port and run
     fastify.listen({port : PORT},

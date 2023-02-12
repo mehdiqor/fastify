@@ -7,5 +7,8 @@ export const getOneProduct = function(req, reply){
     reply.send(product)
 }
 export const getAllProducts = function(req, reply){
-    reply.send(products)
+    reply.send({
+        products,
+        user : req.user
+    })
 }

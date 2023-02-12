@@ -1,72 +1,71 @@
-import { getAllProducts, getOneProduct } from "../handler/product.handler.js";
+import { changeProfileHandler, getProfileHandler } from "../handler/user.handler.js";
 import { getUserMiddleware } from "../utils/get-user.js";
 
-const product = {
+const UserDetail = {
     type : 'object',
     properties : {
-        id : {
-            type : 'integer'
-        },
-        name : {
-            type : 'string'
-        }
+        id : {type : "number"},
+        address : {type : "string"},
+        latitudes : {type : "string"},
+        longitudes : {type : "string"}
     }
 }
-const getOneProductItem = {
+const changeProfileRoute = {
     schema : {
-        tags : ['products'],
+        tags : ['user'],
         security : [{apiKey : []}],
-        params : {
+        body : {
             type : 'object',
             properties : {
-                id : {
-                    type : 'string',
-                    description : 'the id of product'
+                address : {
+                    type : 'string'
+                },
+                latitudes : {
+                    type : 'number'
+                },
+                longitudes : {
+                    type : 'number'
                 }
             }
         },
         response : {
-            200 : product
+            201 : {
+                type : "object"
+            }
         }
     },
-    handler : getOneProduct,
+    handler : changeProfileHandler,
     preHandler : [getUserMiddleware]
 }
-const getProductItem = {
+const getProfileRoute = {
     schema : {
-        tags : ['products'],
+        tags : ['user'],
         security : [{apiKey : []}],
         response : {
             200 : {
                 type : 'object',
                 properties : {
-                    products : {
-                        type : 'array',
-                        items : product
-                    },
                     user : {
-                        type : 'object',
+                        type : "object",
                         properties : {
                             id : {type : "number"},
                             first_name : {type : "string"},
                             last_name : {type : "string"},
                             username : {type : "string"},
                             accessToken : {type : "string"},
+                            UserDetail : UserDetail,
                         }
                     }
                 }
             }
         }
     },
-    handler : getAllProducts,
+    handler : getProfileHandler,
     preHandler : [getUserMiddleware]
 }
 
-export default function productRoutes(fastify, options, done){
-    fastify.addHook("onRequest", (request) => request.jwtVerify())
-    // get all products
-    fastify.get("/", getProductItem);
-    // get one product
-    fastify.get("/:id", getOneProductItem);
+export default function userRoutes(fastify, options, done){
+    fastify.patch("/change", changeProfileRoute);
+    fastify.get("/get", getProfileRoute);
     done();
 }

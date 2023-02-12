@@ -1,8 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import { sequelize } from "../config/sequelize.connection.js";
 
-export class User extends Model{}
-User.init({
+export const User = sequelize.define("User", {
     id : {
         type : DataTypes.INTEGER,
         primaryKey : true,
@@ -34,8 +33,32 @@ User.init({
         type : DataTypes.STRING,
         defaultValue : ""
     }
-}, {
-    sequelize,
-    name : "Users"
 });
-// User.sync({force : true});
+export const UserDetail = sequelize.define("UserDetail", {
+    id : {
+        type : DataTypes.INTEGER,
+        primaryKey : true,
+        autoIncrement : true
+    },
+    address : {
+        type : DataTypes.STRING
+    },
+    latitudes : {
+        type : DataTypes.STRING
+    },
+    longitudes : {
+        type : DataTypes.STRING
+    },
+    UserId : {
+        type : DataTypes.INTEGER
+    }
+});
+User.hasOne(UserDetail);
+UserDetail.belongsTo(User);
+
+// User.sync({alter : true}).then(() => {
+//     console.log('User Sync Completed');
+// });
+// UserDetail.sync({alter : true}).then(() => {
+//     console.log('UserDetail Sync Completed');
+// });
